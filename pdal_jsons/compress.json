@@ -1,0 +1,19 @@
+ {
+ 	"pipeline":[
+ 	   "/input_data/{}.las",
+ 	   {
+ 	      "type":"writers.las",
+ 	      "extra_dims": "all",
+          "minor_version" : "4",
+	 	  "filename":"/output_data/{}.laz"
+ 	   },
+ 	   {
+ 	      "filename":"/output_dem/{}.tif",
+ 	      "gdaldriver":"GTiff",
+ 	      "output_type":"min",
+ 	      "resolution":1.0,
+ 	      "radius":1.5,
+ 	      "type":"writers.gdal"
+ 	   }
+ 	]
+ }
