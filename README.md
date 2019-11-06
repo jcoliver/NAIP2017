@@ -22,3 +22,15 @@ The example  bash script and configuration `json` are in the [/pdal_jsons](/pdal
 I use PDAL's `writer.gdal` option to create a bare earth `*.tif` (minimum height) model in the same `compress.json` pipeline command
 
 The model uses all points, at 1 meter (m) resolution with a 1.5 m radius. The output tiles are between 360-370 Mb each. 
+
+### Moving files up (and down) from CyVerse
+
+I use iCommands to move the contents of the new output data directories: 
+
+```
+iput -KPbvrf /vol_c/AZGS_data /iplant/home/tswetnam/
+```
+
+the [iput](https://docs.irods.org/master/icommands/user/#iput) command uploads the data, the various flags are for checksum, progressive-verbose output, bulk upload, and forced overwrite. 
+
+Once the data are in the data store, I can move them to a shared community directory within CyVerse.
