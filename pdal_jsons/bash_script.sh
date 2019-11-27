@@ -11,12 +11,18 @@ docker pull pdal/pdal:latest
 sudo mkdir -p /vol_c/AZGS_data/GIS_Data_NP112_NP212/NP212_2017/AZ/LAZ/UTM_12/
 sudo mkdir -p /vol_c/AZGS_data/GIS_Data_NP112_NP212/NP212_2017/AZ/DEM/UTM_12/
 
+sudo mkdir -p /vol_c/AZGS_data/GIS_Data_NP112_NP212/NP112_2017/AZ/LAZ/UTM_12/
+sudo mkdir -p /vol_c/AZGS_data/GIS_Data_NP112_NP212/NP112_2017/AZ/DEM/UTM_12/
+
+sudo mkdir -p /vol_c/AZGS_data/GIS_Data_NP112_NP212/NP112_2017/AZ/LAZ/UTM_11/
+sudo mkdir -p /vol_c/AZGS_data/GIS_Data_NP112_NP212/NP112_2017/AZ/DEM/UTM_11/
+
+
 # changed ownership of directories recursively
 sudo chown -R tswetnam:tswetnam /vol_c/AZGS_data
 
 # change into directory with first set of LAS data
 cd /media/tswetnam/AZGS_data/GIS_Data_NP112_NP212/NP212_2017/AZ/LAS/UTM_12/
-
 
 # run bash script to scrape the *.las file names and begin running latest PDAL Docker Container
 cd /media/tswetnam/AZGS_data/GIS_Data_NP112_NP212/NP212_2017/AZ/LAS/UTM_12/
@@ -32,3 +38,34 @@ pipeline /home/pdal_jsons/compress.json \
 --writers.las.filename=/output_data/{}.laz \
 --writers.gdal.filename=/output_dem/{}.tif
 
+# change into directory with first set of LAS data
+cd /media/tswetnam/AZGS_data/GIS_Data_NP112_NP212/NP112_2017/AZ/LAS/UTM_12/
+
+# run bash script to scrape the *.las file names and begin running latest PDAL Docker Container
+cd /media/tswetnam/AZGS_data/GIS_Data_NP112_NP212/NP112_2017/AZ/LAS/UTM_12/
+ls *.las | cut -d. -f1 | xargs -P14 -I{} \
+docker run \
+-v /media/tswetnam/AZGS_data/GIS_Data_NP112_NP212/NP112_2017/AZ/LAS/UTM_12/:/input_data \
+-v /vol_c/AZGS_data/GIS_Data_NP112_NP212/NP112_2017/AZ/LAZ/UTM_12/:/output_data \
+-v /vol_c/AZGS_data/GIS_Data_NP112_NP212/NP112_2017/AZ/DEM/UTM_12/:/output_dem \
+-v /home/tswetnam/github/NAIP2017/:/home \
+pdal/pdal:latest pdal \
+pipeline /home/pdal_jsons/compress.json \
+--readers.las.filename=/input_data/{}.las \
+--writers.las.filename=/output_data/{}.laz \
+--writers.gdal.filename=/output_dem/{}.tif
+
+
+# run bash script to scrape the *.las file names and begin running latest PDAL Docker Container
+cd /media/tswetnam/AZGS_data/GIS_Data_NP112_NP212/NP112_2017/AZ/LAS/UTM_11/
+ls *.las | cut -d. -f1 | xargs -P14 -I{} \
+docker run \
+-v /media/tswetnam/AZGS_data/GIS_Data_NP112_NP212/NP112_2017/AZ/LAS/UTM_11/:/input_data \
+-v /vol_c/AZGS_data/GIS_Data_NP112_NP212/NP112_2017/AZ/LAZ/UTM_11/:/output_data \
+-v /vol_c/AZGS_data/GIS_Data_NP112_NP212/NP112_2017/AZ/DEM/UTM_11/:/output_dem \
+-v /home/tswetnam/github/NAIP2017/:/home \
+pdal/pdal:latest pdal \
+pipeline /home/pdal_jsons/compress.json \
+--readers.las.filename=/input_data/{}.las \
+--writers.las.filename=/output_data/{}.laz \
+--writers.gdal.filename=/output_dem/{}.tif
