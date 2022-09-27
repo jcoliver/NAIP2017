@@ -1,0 +1,7 @@
+# Directory for output files
+output_data/*
+!output_data/.gitkeep
+
+# Directory for input files
+input_data/*
+!input_data/.gitkeep
