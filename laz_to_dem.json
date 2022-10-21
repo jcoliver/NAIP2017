@@ -1,0 +1,15 @@
+{
+ 	"pipeline":[
+    {
+      "type":"readers.las",
+      "compression":"laszip"
+    },
+ 	  {
+      "type":"writers.gdal",
+ 	    "gdaldriver":"GTiff",
+ 	    "output_type":"min",
+ 	    "resolution":1.0,
+ 	    "radius":1.5
+ 	  }
+ 	]
+}

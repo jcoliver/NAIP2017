@@ -1,6 +1,7 @@
 #/bin/bash
 
-# Convert LAS files to LAZ and DEM output
+# Convert LAZ files DEM (tif) output
+# LAZ is a compressed version of LAS (LASzip)
 
 # Pull the latest pdal Docker image
 docker pull pdal/pdal:latest
@@ -13,15 +14,12 @@ OUTPUTDIR="output_data"
 # so we start by storing the absolute path of this directory
 LOCAL=$(pwd)
 # Send the file names to docker to run pdal pipeline
-# Passing the -P option to xargs allows it to run in parallel
-(cd "${INPUTDIR}" && ls *.las) | cut -d. -f1 | xargs -P14 -I{} \
+(cd "${INPUTDIR}" && ls *.laz) | cut -d. -f1 | xargs -P14 -I{} \
 docker run \
 -v "${LOCAL}":/home \
 -v "${LOCAL}"/"${INPUTDIR}":/"${INPUTDIR}" \
 -v "${LOCAL}"/"${OUTPUTDIR}":/"${OUTPUTDIR}" \
 pdal/pdal:latest pdal \
-pipeline home/compress_las.json \
---readers.las.nosrs=true \
---readers.las.filename="${INPUTDIR}"/{}.las \
---writers.las.filename="${OUTPUTDIR}"/{}.laz \
+pipeline home/laz_to_dem.json \
+--readers.las.filename="${INPUTDIR}"/{}.laz \
 --writers.gdal.filename="${OUTPUTDIR}"/{}.tif
