@@ -1,6 +1,6 @@
 #/bin/bash
 
-# Convert LAZ files DEM (tif) output
+# Convert LAZ files to DEM (tif) output
 # LAZ is a compressed version of LAS (LASzip)
 
 # Pull the latest pdal Docker image
@@ -23,3 +23,7 @@ pdal/pdal:latest pdal \
 pipeline home/laz_to_dem.json \
 --readers.las.filename="${INPUTDIR}"/{}.laz \
 --writers.gdal.filename="${OUTPUTDIR}"/{}.tif
+
+# REMEMBER to change ownership of those output files!!!
+# e.g.
+# sudo chown jcoliver:jcoliver output_data/*.tif
